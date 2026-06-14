@@ -1,0 +1,36 @@
+# Build artifacts
+.gradle/
+build/
+app/build/
+*.apk
+*.aab
+*.ap_
+
+# IDE specific files
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Signing files
+*.jks
+*.keystore
+*.p12
+
+# Local configuration
+local.properties
+secrets.properties
+
+# Secrets
+google-services.json
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Captures
+captures/
+
+# Native build
+.externalNativeBuild/
+.cxx/
