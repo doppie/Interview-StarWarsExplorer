@@ -40,7 +40,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":app:data"))
+    implementation(project(":app:domain"))
 
     // Dependency Injection
     implementation(libs.hilt.android)
