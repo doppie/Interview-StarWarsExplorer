@@ -1,0 +1,124 @@
+package com.jelletenbrinke.starwarsexplorer.characterlist
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import com.jelletenbrinke.starwarsexplorer.domain.model.Character
+
+@Composable
+fun CharacterListScreen(
+    onCharacterClick: (String) -> Unit,
+    contentPadding: PaddingValues,
+    viewModel: CharacterListViewModel = hiltViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsState()
+    val listState = rememberLazyListState()
+    val layoutDirection = LocalLayoutDirection.current
+
+    val shouldLoadNextPage by remember {
+        derivedStateOf {
+            val layoutInfo = listState.layoutInfo
+            val totalItemsNumber = layoutInfo.totalItemsCount
+            val lastVisibleItemIndex = (layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0) + 1
+
+            // Increased threshold to 10 to pre-load earlier
+            lastVisibleItemIndex > (totalItemsNumber - 10) && uiState.canLoadMore
+        }
+    }
+
+    LaunchedEffect(shouldLoadNextPage) {
+        if (shouldLoadNextPage) {
+            viewModel.loadNextPage()
+        }
+    }
+
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        // loading state
+        // error state
+        // list
+
+        // TODO: use a snackbar?
+        if (uiState.error != null) {
+            Text(text = uiState.error ?: "Unknown error")
+        }
+
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            state = listState,
+            contentPadding = contentPadding
+        ) {
+            itemsIndexed(
+                items = uiState.characters,
+                key = { _, character -> character.url }
+            ) { _, character ->
+                CharacterRow(
+                    character = character,
+                    onClick = { onCharacterClick(character.url) }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun CharacterRow(
+    character: Character,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .clickable { onClick() }
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+        ) {
+            Text(
+                text = character.name,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.titleMedium
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = if (character.films.isNotEmpty()) {
+                    "Films: ${character.films.joinToString { it.name }}"
+                } else {
+                    "Loading films..."
+                },
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.secondary,
+                maxLines = 2,
+                minLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
+}

@@ -29,16 +29,20 @@ class StarWarsRepositoryImpl @Inject constructor(
         }
 
         // request the page from the endpoint.
-        val response = endpoint.getCharacterPage(pageUrl)
-        if (response.isSuccessful) {
-            response.body()?.let {
-                // cache the character page and return it.
-                pageCache.put(pageUrl, it)
-                return Result.success(it)
+        return try {
+            val response = endpoint.getCharacterPage(pageUrl)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    // cache the character page and return it.
+                    pageCache.put(pageUrl, it)
+                    Result.success(it)
+                } ?: Result.failure(Exception("Empty body"))
+            } else {
+                Result.failure(Exception(response.errorBody()?.string() ?: "Unknown error"))
             }
+        } catch (e: Exception) {
+            Result.failure(e)
         }
-
-        return Result.failure(Exception(response.errorBody()?.string()))
     }
 
     override suspend fun getFilm(filmUrl: String): Result<FilmData> {
@@ -48,16 +52,20 @@ class StarWarsRepositoryImpl @Inject constructor(
         }
 
         // request the film from the endpoint.
-        val response = endpoint.getFilm(filmUrl)
-        if (response.isSuccessful) {
-            response.body()?.let {
-                // cache the film and return it.
-                filmsCache.put(filmUrl, it)
-                return Result.success(it)
+        return try {
+            val response = endpoint.getFilm(filmUrl)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    // cache the film and return it.
+                    filmsCache.put(filmUrl, it)
+                    Result.success(it)
+                } ?: Result.failure(Exception("Empty body"))
+            } else {
+                Result.failure(Exception(response.errorBody()?.string() ?: "Unknown error"))
             }
+        } catch (e: Exception) {
+            Result.failure(e)
         }
-
-        return Result.failure(Exception(response.errorBody()?.string()))
     }
 
     override suspend fun getPlanet(planetUrl: String): Result<PlanetData> {
@@ -67,16 +75,20 @@ class StarWarsRepositoryImpl @Inject constructor(
         }
 
         // request the film from the endpoint.
-        val response = endpoint.getPlanet(planetUrl)
-        if (response.isSuccessful) {
-            response.body()?.let {
-                // cache the plant and return it.
-                planetsCache.put(planetUrl, it)
-                return Result.success(it)
+        return try {
+            val response = endpoint.getPlanet(planetUrl)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    // cache the plant and return it.
+                    planetsCache.put(planetUrl, it)
+                    Result.success(it)
+                } ?: Result.failure(Exception("Empty body"))
+            } else {
+                Result.failure(Exception(response.errorBody()?.string() ?: "Unknown error"))
             }
+        } catch (e: Exception) {
+            Result.failure(e)
         }
-
-        return Result.failure(Exception(response.errorBody()?.string()))
     }
 
 }

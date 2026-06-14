@@ -11,37 +11,27 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.jelletenbrinke.starwarsexplorer.characterlist.CharacterListScreen
 import com.jelletenbrinke.starwarsexplorer.ui.theme.StarWarsExplorerTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             StarWarsExplorerTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+                Scaffold(modifier = Modifier.fillMaxSize()) { contentPadding ->
+                    // TODO: implement navigation.
+                    CharacterListScreen(
+                        onCharacterClick = {
+                            // TODO: navigate to the character detail screen.
+                        },
+                        contentPadding = contentPadding
                     )
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    StarWarsExplorerTheme {
-        Greeting("Android")
     }
 }

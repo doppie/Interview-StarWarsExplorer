@@ -8,7 +8,8 @@ import com.jelletenbrinke.starwarsexplorer.data.model.FilmData
  * DataModel to DomainModel Mapper utility extension functions.
  */
 
-internal fun CharacterPageData.toCharacterPage(films: Map<String, Film>) = CharacterPage(
+internal fun CharacterPageData.toCharacterPage(url: String, films: Map<String, Film>) = CharacterPage(
+    url = url,
     nextPageUrl = nextPageUrl,
     characters = characters.map { it.toCharacter(films) },
 )
