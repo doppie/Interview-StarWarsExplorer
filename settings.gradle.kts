@@ -25,3 +25,4 @@ dependencyResolutionManagement {
 rootProject.name = "Star Wars Explorer"
 include(":app")
 include(":app:data")
+include(":app:domain")
