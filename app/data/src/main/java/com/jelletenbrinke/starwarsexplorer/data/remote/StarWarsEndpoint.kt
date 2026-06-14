@@ -1,4 +1,4 @@
-package com.jelletenbrinke.starwarsexplorer.data
+package com.jelletenbrinke.starwarsexplorer.data.remote
 
 import com.jelletenbrinke.starwarsexplorer.data.model.CharacterPageData
 import com.jelletenbrinke.starwarsexplorer.data.model.FilmData
