@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.jelletenbrinke.starwarsexplorer.characterdetails.CharacterDetailsScreen
 import com.jelletenbrinke.starwarsexplorer.characterlist.CharacterListScreen
+import com.jelletenbrinke.starwarsexplorer.charactersearch.CharacterSearchScreen
 import com.jelletenbrinke.starwarsexplorer.ui.theme.StarWarsExplorerTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.serialization.Serializable
@@ -45,7 +46,12 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable<Destinations.CharacterSearchPage> {
-                        Text(text = "Character Search")
+                        CharacterSearchScreen(
+                            onBackClick = { navController.popBackStack() },
+                            onCharacterClick = { characterUrl ->
+                                navController.navigate(Destinations.CharacterDetailsPage(characterUrl))
+                            }
+                        )
                     }
                 }
             }
