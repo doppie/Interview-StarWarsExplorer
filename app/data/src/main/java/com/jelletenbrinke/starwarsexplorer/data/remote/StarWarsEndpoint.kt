@@ -1,5 +1,6 @@
 package com.jelletenbrinke.starwarsexplorer.data.remote
 
+import com.jelletenbrinke.starwarsexplorer.data.model.CharacterData
 import com.jelletenbrinke.starwarsexplorer.data.model.CharacterPageData
 import com.jelletenbrinke.starwarsexplorer.data.model.FilmData
 import com.jelletenbrinke.starwarsexplorer.data.model.PlanetData
@@ -19,6 +20,10 @@ interface StarWarsEndpoint {
     // example url: https://swapi.py4e.com/api/people/?page=2
     @GET
     suspend fun getCharacterPage(@Url url: String): Response<CharacterPageData>
+
+    // example url: https://swapi.py4e.com/api/people/1
+    @GET
+    suspend fun getCharacter(@Url url: String): Response<CharacterData>
 
     // example url: https://swapi.py4e.com/api/films/2
     @GET

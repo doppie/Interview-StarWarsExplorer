@@ -6,6 +6,6 @@ data class Character(
     val height: String,
     val gender: String,
     val films: List<Film>,
-    val homeworldUrl: String,
+    val homeworld: Planet?,
     val birthYear: String,
 )

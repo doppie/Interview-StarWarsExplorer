@@ -1,5 +1,7 @@
 package com.jelletenbrinke.starwarsexplorer.domain.di
 
+import com.jelletenbrinke.starwarsexplorer.domain.usecases.FetchCharacterDetailsUseCase
+import com.jelletenbrinke.starwarsexplorer.domain.usecases.FetchCharacterDetailsUseCaseImpl
 import com.jelletenbrinke.starwarsexplorer.domain.usecases.FetchCharacterPageUseCase
 import com.jelletenbrinke.starwarsexplorer.domain.usecases.FetchCharacterPageUseCaseImpl
 import dagger.Binds
@@ -13,4 +15,7 @@ abstract interface UseCasesModule {
 
     @Binds
     fun bindFetchCharacterPageUseCase(impl: FetchCharacterPageUseCaseImpl): FetchCharacterPageUseCase
+
+    @Binds
+    fun bindFetchCharacterDetailsUseCase(impl: FetchCharacterDetailsUseCaseImpl): FetchCharacterDetailsUseCase
 }

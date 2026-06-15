@@ -142,7 +142,7 @@ fun CharacterRow(
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = if (character.films.isNotEmpty()) {
-                    "Films: ${character.films.joinToString { it.name }}"
+                    "Films: ${character.films.joinToString { it.title }}"
                 } else {
                     "Loading films..."
                 },

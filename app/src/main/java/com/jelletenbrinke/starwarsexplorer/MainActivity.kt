@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.jelletenbrinke.starwarsexplorer.characterdetails.CharacterDetailsScreen
 import com.jelletenbrinke.starwarsexplorer.characterlist.CharacterListScreen
 import com.jelletenbrinke.starwarsexplorer.ui.theme.StarWarsExplorerTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,7 +39,10 @@ class MainActivity : ComponentActivity() {
                     }
                     composable<Destinations.CharacterDetailsPage> { backStackEntry ->
                         val details = backStackEntry.toRoute<Destinations.CharacterDetailsPage>()
-                        Text(text = "Character Details for ${details.characterUrl}")
+                        CharacterDetailsScreen(
+                            characterUrl = details.characterUrl,
+                            onBackClick = { navController.popBackStack() },
+                        )
                     }
                     composable<Destinations.CharacterSearchPage> {
                         Text(text = "Character Search")

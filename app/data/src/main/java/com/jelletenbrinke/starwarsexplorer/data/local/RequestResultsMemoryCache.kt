@@ -19,4 +19,8 @@ class RequestResultsMemoryCache<V> {
     suspend fun put(key: String, value: V) = mutex.withLock {
         cache[key] = value
     }
+
+    suspend fun values() = mutex.withLock {
+        cache.values.toList()
+    }
 }
