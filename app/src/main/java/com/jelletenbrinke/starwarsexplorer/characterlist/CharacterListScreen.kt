@@ -14,6 +14,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,8 +24,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jelletenbrinke.starwarsexplorer.domain.model.Character
@@ -36,7 +38,7 @@ fun CharacterListScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val listState = rememberLazyListState()
-    val layoutDirection = LocalLayoutDirection.current
+    val snackbarHostState = remember { SnackbarHostState() }
 
     val shouldLoadNextPage by remember {
         derivedStateOf {
@@ -55,17 +57,19 @@ fun CharacterListScreen(
         }
     }
 
+    LaunchedEffect(uiState.error) {
+        uiState.error?.let { error ->
+            snackbarHostState.showSnackbar(error)
+            viewModel.onErrorDismissed()
+        }
+    }
+
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
         // loading state
         // error state
         // list
-
-        // TODO: use a snackbar?
-        if (uiState.error != null) {
-            Text(text = uiState.error ?: "Unknown error")
-        }
 
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -82,6 +86,13 @@ fun CharacterListScreen(
                 )
             }
         }
+
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(contentPadding)
+        )
     }
 }
 

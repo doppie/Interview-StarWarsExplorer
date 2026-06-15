@@ -33,6 +33,10 @@ class CharacterListViewModel @Inject constructor(
         _uiState.value.nextPageUrl?.let { loadCharacterPage(it) }
     }
 
+    fun onErrorDismissed() {
+        _uiState.update { it.copy(error = null) }
+    }
+
     private fun loadCharacterPage(pageUrl: String) {
         // prevent launching multiple requests at the same time.
         if (_uiState.value.isLoading) return
