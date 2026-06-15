@@ -43,6 +43,7 @@ import com.jelletenbrinke.starwarsexplorer.domain.model.Character
 @Composable
 fun CharacterListScreen(
     onCharacterClick: (String) -> Unit,
+    onSearchClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CharacterListViewModel = hiltViewModel()
 ) {
@@ -79,7 +80,7 @@ fun CharacterListScreen(
             TopAppBar(
                 title = { Text(text = stringResource(id = R.string.app_name)) },
                 actions = {
-                    IconButton(onClick = { /* TODO: navigate to search */ }) {
+                    IconButton(onClick = onSearchClick) {
                         Icon(
                             imageVector = Icons.Default.Search,
                             contentDescription = "Search"
