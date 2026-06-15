@@ -22,15 +22,12 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             StarWarsExplorerTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { contentPadding ->
-                    // TODO: implement navigation.
-                    CharacterListScreen(
-                        onCharacterClick = {
-                            // TODO: navigate to the character detail screen.
-                        },
-                        contentPadding = contentPadding
-                    )
-                }
+                // TODO: implement navigation.
+                CharacterListScreen(
+                    onCharacterClick = {
+                        // TODO: navigate to the character detail screen.
+                    }
+                )
             }
         }
     }
