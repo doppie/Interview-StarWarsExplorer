@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -43,11 +45,10 @@ fun CharacterListScreen(
     val shouldLoadNextPage by remember {
         derivedStateOf {
             val layoutInfo = listState.layoutInfo
-            val totalItemsNumber = layoutInfo.totalItemsCount
-            val lastVisibleItemIndex = (layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0) + 1
+            val lastVisibleItemIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+            val nextPageThresholdIndex = layoutInfo.totalItemsCount - 6
 
-            // Increased threshold to 10 to pre-load earlier
-            lastVisibleItemIndex > (totalItemsNumber - 10) && uiState.canLoadMore
+            lastVisibleItemIndex > nextPageThresholdIndex && uiState.canLoadMore
         }
     }
 
@@ -64,13 +65,8 @@ fun CharacterListScreen(
         }
     }
 
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        // loading state
-        // error state
-        // list
-
+    Box(modifier = Modifier.fillMaxSize()) {
+        // List
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             state = listState,
@@ -84,6 +80,13 @@ fun CharacterListScreen(
                     character = character,
                     onClick = { onCharacterClick(character.url) }
                 )
+            }
+
+            if (uiState.isLoading) {
+                item {
+                    LoadingMoreRow()
+
+                }
             }
         }
 
@@ -132,4 +135,14 @@ fun CharacterRow(
             )
         }
     }
+}
+
+@Composable
+fun LoadingMoreRow() {
+    CircularProgressIndicator(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .wrapContentWidth(Alignment.CenterHorizontally)
+    )
 }
